@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="utf-8">
+    <title>WorkFlow Form Builder - Team 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+</head>
+<body>
+
+
+<div align="center">
+    <button id="button" onclick="myFunction()">Get Form</button>
+</div>
+
+<div class="span6">
+    <div class="clearfix">
+        <div id="build2"></div>
+    </div>
+</div>
+
+<div class="span6">
+    <div class="clearfix">
+      <div id="build"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+function myFunction() {
+    Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+    
+    var form= Parse.Object.extend("WorkFlowForm");
+    var query = new Parse.Query(form);
+    query.find({
+        success: function(results) {
+            alert("Successfully retrieved " +  results.length  + " Objects");
+            // Do something with the returned Parse.Object values
+            var formObj = Parse.Object.extend("WorkFlowForm");
+            formObj = results[results.length-1];
+            document.getElementById("build").innerHTML = formObj.get('FormCode');
+        },
+        error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+        }
+    });
+}
+</script>
+
+</body>
+</html> 
