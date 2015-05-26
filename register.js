@@ -1,8 +1,12 @@
+
+
 function registerFunction(email,firstName,lastName,userType,password) {
+
 
  Parse.initialize("q739A3XGOjqeLfXtl4vJXT33UENWvpesaAulyQPD", "uOPMZ9HUu9zDTsZfD7AFpACnmkBWJq5aruLsE3IC");
 
-  
+  var hashpw = CryptoJS.SHA1(password);
+
   var TestObject = Parse.Object.extend("Users");
   var testObject = new TestObject();
   testObject.save(
@@ -10,7 +14,7 @@ function registerFunction(email,firstName,lastName,userType,password) {
     FirstName: firstName,
     LastName: lastName,
     UserType: userType,
-    Password: password},
+    Password: hashpw.toString(CryptoJS.enc.Base64)},
       {
         success: function(testObject) {
           alert("successfully registered!")
@@ -34,7 +38,6 @@ function login(email, password){
   var WorkflowUser = Parse.Object.extend("Users");
   var query = new Parse.Query(WorkflowUser);
 
-
   query.equalTo("Email", email);
  
 
@@ -48,10 +51,9 @@ function login(email, password){
       var object = results[0];
       var pw = object.get('Password');
 
-      
+	  var hashedpw = CryptoJS.SHA1(password);
 
-      if(pw == password){
-        
+      if(pw == hashedpw.toString(CryptoJS.enc.Base64)){    
         window.location = 'main.html'
       }
       else{
