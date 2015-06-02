@@ -1,3 +1,11 @@
+div.centre
+{
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
   padding-bottom: 10px;
