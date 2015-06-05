@@ -45,10 +45,14 @@
     		</div>
 		</div>
 
-	<p></p>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 	<div align="center">
 		<button id="saveForm" onclick="saveFormFunction()">Save Form</button>
 	</div>
+	<br>
+	<br>
+
+	<p id="JSON"></p>
 
     
 </body>
@@ -93,14 +97,38 @@
 	}
 
 	function saveFormFunction(){
-		Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+//		Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+//
+//		var SavedForm = Parse.Object.extend("SavedForm");
+//		var savedForm = new SavedForm();
+//
+//		savedForm.save({FormCode: document.getElementById("build").innerHTML, Name: document.getElementById("formName").innerHTML, user: "TestUser" }).then(function(object) {
+//			alert("Saved to Parse!");
+//		});
 
-		var SavedForm = Parse.Object.extend("SavedForm");
-		var savedForm = new SavedForm();
 
-		savedForm.save({FormCode: document.getElementById("build").innerHTML, Name: document.getElementById("formName").innerHTML, user: "TestUser" }).then(function(object) {
-			alert("Saved to Parse!");
-		});
+		var doc = document.getElementById("form");
+
+		var JSON = "{\n\t";
+
+		JSON += document.getElementById("formName").innerHTML;
+
+		JSON += " : {\n\t\t";
+
+		var doc = document.getElementById("form");
+
+		for (i = 1; i < doc.length; i++){
+			if (doc.elements[i].type == "text") {
+				JSON += doc.elements[i].id + " : " + doc.elements[i].value + ", \n\t\t ";
+			}
+			//else if (doc.elements[i].type == "radio"){
+			//	JSON += doc.elements[i].id + " : " + doc.elements[i].checked + "\n\t\t, ";
+			//}
+		}
+
+		JSON += "\t}\n}";
+		//alert (JSON);
+		document.getElementById("JSON").innerHTML = JSON;
 
 	}
 </script>
