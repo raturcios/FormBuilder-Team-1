@@ -54,7 +54,24 @@
 
 	<p id="JSON"></p>
 
-    
+    	
+<!-- for userID display START-->
+        <div class="span6">
+      	 	<div class="clearfix">
+       			<div id="forid"></div>
+   	 	</div>
+	</div>
+
+	<script type="text/javascript">
+		var usersid = localStorage.getItem('userID');
+		document.getElementById('forid').innerHTML = "UserID = " + usersid;
+
+	</script>
+
+<!-- for userID display END-->
+
+
+
 </body>
 
 <script type="text/javascript">

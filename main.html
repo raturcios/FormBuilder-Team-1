@@ -65,7 +65,7 @@
                         <a href="#formslist">Users-Fill Out Forms</a>
                     </li>
                     <li>
-                        <a href="home.html">LogOut</a>
+                        <a href = "javascript:deleteLocalStorage()">LogOut</a>
                     </li>
                 </ul>
             </div>
@@ -170,4 +170,13 @@
     <script src="js/bootstrap.min.js"></script>
 
 </body>
+
+    <script type="text/javascript">
+    function deleteLocalStorage() {
+      localStorage.removeItem('userID');
+      window.location = "home.html";
+    }
+    </script>
+    
+
 </html>
