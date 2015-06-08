@@ -1,25 +1,79 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-     <meta charset="utf-8">
+
+ <head>
+    <meta charset="utf-8">
     <title>WorkFlow Form Builder - Team 1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
+
+   
+
     <link href="assets/css/custom.css" rel="stylesheet">
+     <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
+
+
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+
     <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
-</head>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  </head>
+
 
 <body>
-	<div align="center">
-    	<button id="button" onclick="myFunction()">Get Form Names</button>
-	</div>
+
+ <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand topnav" href="main.html"><b>Workflow</b></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li>
+                        <a href="main.html"><b>Main</b></a>
+                    </li>
+                    <li>
+                        <a href = "javascript:deleteLocalStorage()"><b>LogOut</b></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+
+	<br><br>
+
+    <div align="center">
+      <button id="button" class="btn btn-info" onclick="myFunction()">Get Form Names</button>
+    </div>
+
+    <br>
+
+
+
+
 
 	<!-- Select Basic -->
 	<div class="control-group" align="center">
@@ -31,23 +85,34 @@
 	</div>
     <r></r>
     <div align="center">
-    	<button id="button2" onclick="testFunction()"> Get Form </button>
+    	<button id="button2" class="btn btn-info" onclick="testFunction()"> Get Form </button>
     </div>
+    <br><br>
     
-    <r></r>
-    
-	<div class="span6" align="center">
-    	<div class="clearfix" align="center"></div>
-	</div>
-		<div class="span6">
-    		<div class="clearfix">
-      			<div id="build"></div>
-    		</div>
-		</div>
 
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!-- 	<div class="span6" align="center">
+    	<div class="clearfix" align="center"></div>
+</div> -->
+<!-- 		<div >
+    		<div class = "clearfix">
+      			<div id="build_o" ><form><fieldset id="build"></fieldset></form></div>
+    		</div>
+</div> -->
+<div algin = "center">
+<div class="container">
+      <div class="row clearfix">
+          <div class="clearfix">
+            <hr>
+              <form id="build" class="form-horizontal">
+              </form>
+        </div>
+</div></div></div>
+
+
+	<br><br>
 	<div align="center">
-		<button id="saveForm" onclick="saveFormFunction()">Save Form</button>
+		<button id="saveForm" class = "btn btn-success" onclick="saveFormFunction()" style="margin-right:20px"><b>Save and Edit Later</b></button>
+		<button id="submitForm" class = "btn btn-primary" onclick="saveFormFunction()"><b>Submit Form</b></button> <!-- NEED TO CHANGE THE FUNCTION!! -->
 	</div>
 	<br>
 	<br>
@@ -75,6 +140,16 @@
 </body>
 
 <script type="text/javascript">
+
+
+    function deleteLocalStorage() {
+      localStorage.removeItem('userID');
+      window.location = "home.html";
+    }
+
+
+   
+
 	function myFunction() {
 	  Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
 	  
