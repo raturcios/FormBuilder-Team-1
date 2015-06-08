@@ -204,15 +204,15 @@
 	function submitForm(){
 		var doc = document.forms[0];
 
-		var JSON = "{\n\t";
+		var JSON = "{\n\t\"";
 
 		JSON += document.getElementById("formName").innerHTML;
 
-		JSON += " : {\n\t\t";
+		JSON += "\" : {\n\t\t";
 
 		for (i = 1; i < doc.length; i++){
 			if (doc.elements[i].type == "text") {
-				JSON += doc.elements[i].id + " : " + doc.elements[i].value + ", \n\t\t ";
+				JSON += "\"" + doc.elements[i].id + "\" : \"" + doc.elements[i].value + "\", \n\t\t ";
 			}
 		}
 
