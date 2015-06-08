@@ -8,10 +8,10 @@
     <meta name="author" content="">
 
 
-   
+
 
      <link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
-     
+
     <link href="assets/css/custom.css" rel="stylesheet">
     <link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
 
@@ -62,8 +62,22 @@
     </nav>
 <br><br>
 
+<!-- Select Basic -->
+    <div class="control-group" align="center">
+        <label class="control-label" for="selectWorkflow">Select Workflow</label>
+        <div class="controls">
+            <select id="selectWorkflow" name="selectbasic-0" class="input-xlarge">
+            </select>
+        </div>
+    </div>
     <div align="center">
-      <button id="button" class="btn btn-success" onclick="submitFunction()">Submit to Parse</button>
+        <button id="button2" class="btn btn-info" onclick="getWorkFlowList()"> Get Workflow List </button>
+    </div>
+
+    <br>
+
+    <div align="center">
+      <button id="button" class="btn btn-success" onclick="submitFunction()">Publish</button>
     </div>
 
     <br>
@@ -117,14 +131,35 @@
 
 
         function submitFunction() {
-          //alert("inside the submitFunction");
-          Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
-          //confirm(document.getElementById("render").value);
-          var FormObject = Parse.Object.extend("WorkFlowForm");
-          var formObject = new FormObject();
-          formObject.save({FormCode: document.getElementById("render").value, Name: document.getElementById("formName").innerHTML }).then(function(object) {
-            alert("Saved to Parse!");
-          });
+            if (document.getElementById("selectWorkflow").value == ""){
+                alert("Please select workflow for form!");
+                return;
+            }
+            Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+            var FormObject = Parse.Object.extend("WorkFlowForm");
+            var formObject = new FormObject();
+            formObject.save({FormCode: document.getElementById("render").value, Workflow: document.getElementById("selectWorkflow").value , Name: document.getElementById("formName").innerHTML }).then(function(object) {
+                alert("Form Published");
+            });
+        }
+
+        function getWorkFlowList() {
+            Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+
+            var workflows = Parse.Object.extend("Workflow");
+            var query = new Parse.Query(workflows);
+            query.find({
+                success: function(results) {
+                    //alert("Successfully retrieved " +  results.length  + " Objects");
+                    // Do something with the returned Parse.Object values
+                    for (i=0; i < results.length; i++){
+                        document.getElementById("selectWorkflow").innerHTML += "\n<option>" + results[i].get('Name') + "</option>";
+                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
         }
       </script>
 

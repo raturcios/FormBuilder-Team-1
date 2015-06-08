@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8">
+	<title>WorkFlow Form Builder - Team 1</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+
+
+	<link href="assets/css/custom.css" rel="stylesheet">
+	<link href="assets/css/lib/bootstrap.min.css" rel="stylesheet">
+	<link href="assets/css/lib/bootstrap-responsive.min.css" rel="stylesheet">
+
+
+	<!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+</head>
+
+<body>
+
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+		<div class="container topnav">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand topnav" href="main.html"><b>Workflow</b></a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+
+					<li>
+						<a href="main.html"><b>Main</b></a>
+					</li>
+					<li>
+						<a href = "javascript:deleteLocalStorage()"><b>LogOut</b></a>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+	<div align="center">
+    	<button id="button" class="btn btn-info" onclick="myFunction()">Get Saved Forms</button>
+	</div>
+
+	<!-- Select Basic -->
+	<div class="control-group" align="center">
+  		<label class="control-label" for="selectbasic-0">Select Form From List</label>
+  		<div class="controls">
+    		<select id="selectbasic-0" name="selectbasic-0" class="input-xlarge">
+    		</select>
+  		</div>
+	</div>
+    <r></r>
+    <div align="center">
+    	<button id="button2" class="btn btn-info" onclick="getForm()"> Get Form </button>
+    </div>
+    
+    <br>
+
+	<div algin = "center">
+		<div class="container">
+			<div class="row clearfix">
+				<div class="clearfix">
+					<hr>
+					<form id="build" class="form-horizontal">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br><br>
+	<div align="center">
+		<button id="saveForm" class = "btn btn-success" onclick="saveFormFunction()">Save Form</button>
+		<button id="submitForm" class = "btn btn-primary" onclick="submitForm()"><b>Submit Form</b></button>
+	</div>
+	<br>
+	<br>
+    	
+<!-- for userID display START-->
+        <div class="span6">
+      	 	<div class="clearfix">
+       			<div id="forid"></div>
+   	 	</div>
+	</div>
+
+	<script type="text/javascript">
+		var usersid = localStorage.getItem('userID');
+		document.getElementById('forid').innerHTML = "UserID = " + usersid;
+
+	</script>
+
+<!-- for userID display END-->
+
+
+
+</body>
+
+<script type="text/javascript">
+	function deleteLocalStorage() {
+		localStorage.removeItem('userID');
+		window.location = "home.html";
+	}
+
+	function myFunction() {
+	    Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+	    var form= Parse.Object.extend("SavedForm");
+	    var query = new Parse.Query(form);
+        query.equalTo("user", localStorage.getItem('userID'));
+
+        query.find({
+		  success: function(results) {
+			  //alert("Successfully retrieved " +  results.length  + " Objects");
+			  // Do something with the returned Parse.Object values
+			  for (i=0; i < results.length; i++){
+					document.getElementById("selectbasic-0").innerHTML += "\n<option id=" + results[i].id + ">" + results[i].get('Name') + " (" + results[i].id + ")" + "</option>";
+			  }
+		  },
+		  error: function(error) {
+			  alert("Error: " + error.code + " " + error.message);
+		  }
+	  });
+	}
+	
+	function getForm(){
+		Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+	  
+	  	var form= Parse.Object.extend("SavedForm");
+	  	var query = new Parse.Query(form);
+        var options = document.getElementById("selectbasic-0").options;
+        var id      = options[options.selectedIndex].id;
+	  	query.equalTo("objectId", id);
+	  	query.find({
+		  	success: function(results) {
+		  		// Do something with the returned Parse.Object values
+			  	var formObj = Parse.Object.extend("WorkFlowForm");
+            	formObj = results[0];
+            	document.getElementById("build").innerHTML = formObj.get('FormCode');
+                var JSON = formObj.get('JSON');
+                JSON = JSON.substring(1,JSON.length-1);
+                JSON = JSON.substring(JSON.indexOf("{")+1,JSON.lastIndexOf("}"));
+                JSONArray = JSON.split(",");
+
+                for (i=1; i< JSONArray.length; i++){
+                    var idValue = JSONArray[i-1].split(" : ");
+                    document.getElementById(idValue[0].trim()).value = idValue[1].trim();
+                }
+		  	},
+		  	error: function(error) {
+			 	 alert("Error: " + error.code + " " + error.message);
+		  	}
+	  	});
+	}
+
+	function saveFormFunction(){
+		Parse.initialize("CRXkf1yR9J0nmuceGyELfcr8JXCNRc5fRHZEmpP9", "ZL0t301476ATdbK2mN33zpIL5d8lpbfGIRYRFypb");
+
+
+		var doc = document.forms[0];
+
+		var JSON = "{\n\t";
+
+		JSON += document.getElementById("formName").innerHTML;
+
+		JSON += " : {\n\t\t";
+
+		for (i = 1; i < doc.length; i++){
+			JSON += doc.elements[i].id + " : " + doc.elements[i].value + ", \n\t\t ";
+		}
+
+		JSON += "\t}\n}";
+
+
+		var form= Parse.Object.extend("SavedForm");
+		var query = new Parse.Query(form);
+		var options = document.getElementById("selectbasic-0").options;
+		var id      = options[options.selectedIndex].id;
+		query.equalTo("objectId", id);
+		query.find({
+			success: function(results) {
+				// Do something with the returned Parse.Object values
+				var formObj = Parse.Object.extend("WorkFlowForm");
+				formObj = results[0];
+				formObj.set("JSON", JSON);
+				formObj.save();
+				alert("Successfully Updated Saved Form");
+			},
+			error: function(error) {
+				alert("Error: " + error.code + " " + error.message);
+			}
+		});
+
+	}
+
+	function submitForm(){
+		var doc = document.forms[0];
+
+		var JSON = "{\n\t";
+
+		JSON += document.getElementById("formName").innerHTML;
+
+		JSON += " : {\n\t\t";
+
+		for (i = 1; i < doc.length; i++){
+			if (doc.elements[i].type == "text") {
+				JSON += doc.elements[i].id + " : " + doc.elements[i].value + ", \n\t\t ";
+			}
+		}
+
+		JSON += "\t}\n}";
+
+		var SubmittedForm = Parse.Object.extend("SubmittedForms");
+		var submitted = new SubmittedForm();
+		submitted.save({JSON: JSON  , FormName: document.getElementById("formName").innerHTML, User: localStorage.getItem('userID')}).then(function(object) {
+			alert("Form Successfully Submitted");
+		});
+	}
+</script>
+</html>
